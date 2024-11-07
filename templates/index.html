@@ -88,6 +88,9 @@
 
         <!-- Inkom knop groter -->
         <button onclick="showQR('inkom')" class="button-large">INKOM</button>
+
+        <!-- Vrij Bedrag knop -->
+        <button onclick="showQR('vrij bedrag')" class="button-large">Vrij Bedrag</button>
     </div>
     
     <div id="qr-code">
@@ -100,13 +103,20 @@
     <script>
         // Functie om de juiste QR-code afbeelding te tonen en bedrag weer te geven
         function showQR(amount) {
-            let imagePath = `/static/${amount}.png`;
+            let imagePath;
+            
+            // Controleer of het een vrij bedrag is
+            if (amount === 'vrij bedrag') {
+                imagePath = `/static/vrij bedrag.png`;
+                document.getElementById("amount-label").textContent = "Vrij Bedrag";
+            } else {
+                imagePath = `/static/${amount}.png`;
+                let amountText = amount === 'inkom' ? 'Inkom' : `Betaling voor: ${amount}`;
+                document.getElementById("amount-label").textContent = amountText;
+            }
+
+            // Stel de QR-afbeelding en interface in
             document.getElementById("qr-image").src = imagePath;
-
-            // Toon het bedrag onder de QR-code
-            let amountText = amount === 'inkom' ? 'Inkom' : `Betaling voor: ${amount}`;
-            document.getElementById("amount-label").textContent = amountText;
-
             document.getElementById("amounts").style.display = "none";
             document.getElementById("qr-code").style.display = "block";
         }
